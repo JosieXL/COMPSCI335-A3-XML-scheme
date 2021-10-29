@@ -1,0 +1,65 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<!-- The product list endpoint is http://redsox.uoa.auckland.ac.nz/ds/DairyService.svc/items, find country name from the endpoint -->
+    <xs:complexType name="ArrayOfItemType">
+        <xs:sequence>
+            <xs:element name="Item" type="ItemType" minOccurs="0" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+
+        
+    </xs:complexType>
+
+    <xs:complexType name="ItemType">
+        <xs:sequence>
+            <xs:element name="Price" type="xs:decimal"></xs:element>
+            <xs:element name="Title" type="xs:string"></xs:element>
+            <xs:element name="Types" type="OutsideTypesType"></xs:element>
+        </xs:sequence>
+
+        <!-- id and origin are attributes as <Item id="..." origin="...">...</Item> where id is required and origin is optional with default value to NZ -->
+        <!-- id is an integer with no signed, so better to use unsignedInt as type -->
+        <xs:attribute name="id" type="xs:unsignedInt"></xs:attribute>
+        <xs:attribute name="origin" type="OriginType" use="optional" default="NZ"></xs:attribute>
+    </xs:complexType>
+
+    <!-- Origin field is a country name, only a restricted set of strings are permissible -->
+    <xs:simpleType name="OriginType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="NZ"></xs:enumeration>
+            <xs:enumeration value="Sweden"></xs:enumeration>
+            <xs:enumeration value="France"></xs:enumeration>
+            <xs:enumeration value="Italy"></xs:enumeration>
+            <xs:enumeration value="England"></xs:enumeration>
+            <xs:enumeration value="Spain"></xs:enumeration>
+            <xs:enumeration value="Netherlands"></xs:enumeration>
+            <xs:enumeration value="Iceland"></xs:enumeration>
+            <xs:enumeration value="Switzerland"></xs:enumeration>
+            <xs:enumeration value="Portugal"></xs:enumeration>
+            <xs:enumeration value="Cyprus"></xs:enumeration>
+            <xs:enumeration value="Bulgaria"></xs:enumeration>
+            <xs:enumeration value="Denmark"></xs:enumeration>
+            <xs:enumeration value="India"></xs:enumeration>
+            <xs:enumeration value="Greece"></xs:enumeration>
+            <xs:enumeration value="Hungary"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="OutsideTypesType">
+        <xs:sequence>
+            <xs:element name="Type" type="insideTypeType" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- In the assignment sheet, it said:"the types now are restricted to what the shop supports: Cheese, Milk, Butter, Cream, and Yogurt." -->
+    <xs:simpleType name="insideTypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Cheese"></xs:enumeration>
+            <xs:enumeration value="Milk"></xs:enumeration>
+            <xs:enumeration value="Butter"></xs:enumeration>
+            <xs:enumeration value="Cream"></xs:enumeration>
+            <xs:enumeration value="Yogurt"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- root of the XML file <ArrayOfItem>...</ArrayOfItem> -->
+    <xs:element name="ArrayOfItem" type="ArrayOfItemType"></xs:element>
+</xs:schema>
